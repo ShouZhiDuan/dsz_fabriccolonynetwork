@@ -1,0 +1,34 @@
+version: '2'
+services:
+  kafka:
+    image: hyperledger/fabric-kafka
+    container_name: ${KAFKA_HOST}
+    hostname: ${KAFKA_HOST}
+    restart: always
+    environment:
+      - KAFKA_BROKER_ID=${SERVER_ID}
+      - KAFKA_ZOOKEEPER_CONNECT=${ZK_0_HOST}:2181,${ZK_1_HOST}:2181,${ZK_2_HOST}:2181,${ZK_3_HOST}:2181,${ZK_4_HOST}:2181
+#      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${KAFKA_HOST}:9092
+      - KAFKA_ADVERTISED_HOST_NAME=${KAFKA_ADVERTISED}
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_MESSAGE_MAX_BYTES=1048576 # 1 * 1024 * 1024 B
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=1048576 # 1 * 1024 * 1024 B
+      - KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE=false
+      - KAFKA_LOG_RETENTION_MS=-1
+      - KAFKA_MIN_INSYNC_REPLICAS=2
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
+      # - KAFKA_AUTHORIZER_CLASS_NAME=kafka.security.auth.SimpleAclAuthorizer
+    ports:
+      - 9092:9092
+      - 9093:9093
+    extra_hosts:
+      - "${ZK_0_HOST}:${IP_0}"
+      - "${ZK_1_HOST}:${IP_1}"
+      - "${ZK_2_HOST}:${IP_2}"
+      - "${ZK_3_HOST}:${IP_3}"
+      - "${ZK_4_HOST}:${IP_4}"
+      - "${KAFKA_0_HOST}:${IP_0}"
+      - "${KAFKA_1_HOST}:${IP_1}"
+      - "${KAFKA_2_HOST}:${IP_2}"
+      - "${KAFKA_3_HOST}:${IP_3}"
+      - "${KAFKA_4_HOST}:${IP_4}"

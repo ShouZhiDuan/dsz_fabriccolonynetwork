@@ -1,0 +1,1 @@
+git clone ssh://git@nvxg.nvxclouds.com:11622/blockchain/fabric1.4/nvxclouds_fabriccolonynetwork.git

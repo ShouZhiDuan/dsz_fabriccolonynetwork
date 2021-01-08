@@ -1,0 +1,12 @@
+version: '2'
+services:
+
+  kafka:
+    extends:
+      service: kafka
+      file: base/kafka-base.yaml
+
+networks:
+  default:
+    external:
+      name: nvxclouds.com

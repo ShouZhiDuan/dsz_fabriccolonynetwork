@@ -1,0 +1,324 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+---
+Organizations:
+
+  - &OrdererOrg
+    Name: OrdererOrg
+    ID: OrdererMSP
+    MSPDir: ../crypto-config/ordererOrganizations/nvxclouds.com/msp
+    Policies:
+      # Readers:
+      #     Type: Signature
+      #     Rule: "OR('OrdererMSP.member')"
+      # Writers:
+      #     Type: Signature
+      #     Rule: "OR('OrdererMSP.member')"
+      # Admins:
+      #     Type: Signature
+      #     Rule: "OR('OrdererMSP.admin')"
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+
+  - &AU
+    Name: AppUserMSP
+    ID: AppUserMSP
+    MSPDir: ../crypto-config/peerOrganizations/appuser.nvxclouds.com/msp
+    Policies:
+      # Readers:
+      #     Type: Signature
+      #     Rule: "OR('AppUserMSP.admin', 'AppUserMSP.peer', 'AppUserMSP.client')"
+      # Writers:
+      #     Type: Signature
+      #     Rule: "OR('AppUserMSP.admin', 'AppUserMSP.client')"
+      # Admins:
+      #     Type: Signature
+      #     Rule: "OR('AppUserMSP.admin')"
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+
+    AnchorPeers:
+      - Host: peer0.appuser.nvxclouds.com
+        Port: 7051
+
+  - &DP
+    Name: DataProviderMSP
+    ID: DataProviderMSP
+    MSPDir: ../crypto-config/peerOrganizations/dataprovider.nvxclouds.com/msp
+    Policies:
+      # Readers:
+      #     Type: Signature
+      #     Rule: "OR('DataProviderMSP.admin', 'DataProviderMSP.peer', 'DataProviderMSP.client')"
+      # Writers:
+      #     Type: Signature
+      #     Rule: "OR('DataProviderMSP.admin', 'DataProviderMSP.client')"
+      # Admins:
+      #     Type: Signature
+      #     Rule: "OR('DataProviderMSP.admin')"
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+
+    AnchorPeers:
+      - Host: peer0.dataprovider.nvxclouds.com
+        Port: 7051
+
+  - &DU
+    Name: DataUserMSP
+    ID: DataUserMSP
+    MSPDir: ../crypto-config/peerOrganizations/datauser.nvxclouds.com/msp
+    Policies:
+      # Readers:
+      #     Type: Signature
+      #     Rule: "OR('DataUserMSP.admin', 'DataUserMSP.peer', 'DataUserMSP.client')"
+      # Writers:
+      #     Type: Signature
+      #     Rule: "OR('DataUserMSP.admin', 'DataUserMSP.client')"
+      # Admins:
+      #     Type: Signature
+      #     Rule: "OR('DataUserMSP.admin')"
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+
+
+    AnchorPeers:
+      - Host: peer0.datauser.nvxclouds.com
+        Port: 7051
+
+  - &RL
+    Name: RegulatorMSP
+    ID: RegulatorMSP
+    MSPDir: ../crypto-config/peerOrganizations/regulator.nvxclouds.com/msp
+    Policies:
+      # Readers:
+      #     Type: Signature
+      #     Rule: "OR('RegulatorMSP.admin', 'RegulatorMSP.peer', 'RegulatorMSP.client')"
+      # Writers:
+      #     Type: Signature
+      #     Rule: "OR('RegulatorMSP.admin', 'RegulatorMSP.client')"
+      # Admins:
+      #     Type: Signature
+      #     Rule: "OR('RegulatorMSP.admin')"
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+
+    AnchorPeers:
+      - Host: peer0.regulator.nvxclouds.com
+        Port: 7051
+
+  - &AP
+    Name: AppProviderMSP
+    ID: AppProviderMSP
+    MSPDir: ../crypto-config/peerOrganizations/appprovider.nvxclouds.com/msp
+    Policies:
+      # Readers:
+      #     Type: Signature
+      #     Rule: "OR('AppProviderMSP.admin', 'AppProviderMSP.peer', 'AppProviderMSP.client')"
+      # Writers:
+      #     Type: Signature
+      #     Rule: "OR('AppProviderMSP.admin', 'AppProviderMSP.client')"
+      # Admins:
+      #     Type: Signature
+      #     Rule: "OR('AppProviderMSP.admin')"
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+      Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+
+    AnchorPeers:
+      - Host: peer0.appprovider.nvxclouds.com
+        Port: 7051
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V1_4_3: true
+    V1_3: false
+    V1_1: false
+
+  Orderer: &OrdererCapabilities
+    V1_4_2: true
+    V1_1: false
+
+  Application: &ApplicationCapabilities
+    V1_4_2: true
+    V1_3: false
+    V1_2: false
+    V1_1: false
+
+Application: &ApplicationDefaults
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+  OrdererType: kafka
+
+  Addresses:
+    - orderer0.nvxclouds.com:7050
+    - orderer1.nvxclouds.com:7050
+    - orderer2.nvxclouds.com:7050
+    - orderer3.nvxclouds.com:7050
+    - orderer4.nvxclouds.com:7050
+
+  BatchTimeout: 2s
+
+  BatchSize:
+
+    MaxMessageCount: 400
+
+    AbsoluteMaxBytes: 99 MB
+
+    PreferredMaxBytes: 512 KB
+
+  Kafka:
+    Brokers:
+      - kafka0:9092
+      - kafka1:9092
+      - kafka2:9092
+      - kafka3:9092
+      - kafka4:9092
+
+  Organizations:
+
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+
+  # NvxcloudsOrdererGenesis:
+  #     Orderer:
+  #         <<: *OrdererDefaults
+  #         Organizations:
+  #             - *OrdererOrg
+  #         Capabilities:
+  #             <<: *OrdererCapabilities
+  #     Consortiums:
+  #         NvxcloudsConsortium:
+  #             Organizations:
+  #                 - *AU
+  #                 - *DP
+  #                 - *DU
+  #                 - *RLM
+
+  NvxcloudsOrdererGenesis:
+    <<: *ChannelDefaults
+    Capabilities:
+      <<: *ChannelCapabilities
+    Orderer:
+      <<: *OrdererDefaults
+      # OrdererType: kafka
+      # Kafka:
+      #     Brokers:
+      #     - kafka0.nvxclouds.com:9092
+      #     - kafka1.nvxclouds.com:9092
+      #     - kafka2.nvxclouds.com:9092
+      #     - kafka3.nvxclouds.com:9092
+
+      Organizations:
+        - *OrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - <<: *OrdererOrg
+    Consortiums:
+      NvxcloudsConsortium:
+        Organizations:
+          - *AU
+          - *DP
+          - *DU
+          - *RL
+          - *AP
+
+  NvxcloudsChannel:
+    Consortium: NvxcloudsConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *AU
+        - *DP
+        - *DU
+        - *RL
+        - *AP
+      Capabilities:
+        <<: *ApplicationCapabilities

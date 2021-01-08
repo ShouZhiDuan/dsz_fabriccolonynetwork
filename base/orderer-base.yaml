@@ -1,0 +1,50 @@
+version: '2'
+
+services:
+  orderer-base:
+    image: hyperledger/fabric-orderer:${IMAGE_TAG}
+    container_name: ${ORDERER_HOST}.${NETWORKMODE}
+    restart: always
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_TOPIC_REPLICATIONFACTOR=3
+      - ORDERER_KAFKA_VERBOSE=true
+      - ORDERER_KAFKA_BROKERS=[${KAFKA_0_HOST}:9092,${KAFKA_1_HOST}:9092,${KAFKA_2_HOST}:9092,${KAFKA_3_HOST}:9092,${KAFKA_4_HOST}:9092]
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+      - ${GENESIS_BLOCK}:/var/hyperledger/orderer/orderer.genesis.block
+      - ${ORDERER_MSP}:/var/hyperledger/orderer/msp
+      - ${ORDERER_TLS}:/var/hyperledger/orderer/tls
+      - orderer.nvxclouds.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+    extra_hosts:
+      - "${ZK_0_HOST}:${IP_0}"
+      - "${ZK_1_HOST}:${IP_1}"
+      - "${ZK_2_HOST}:${IP_2}"
+      - "${ZK_3_HOST}:${IP_3}"
+      - "${ZK_4_HOST}:${IP_4}"
+      - "${KAFKA_0_HOST}:${IP_0}"
+      - "${KAFKA_1_HOST}:${IP_1}"
+      - "${KAFKA_2_HOST}:${IP_2}"
+      - "${KAFKA_3_HOST}:${IP_3}"
+      - "${KAFKA_4_HOST}:${IP_4}"
+      - "${ORDERER_0_HOST}:${IP_0}"
+      - "${ORDERER_1_HOST}:${IP_1}"
+      - "${ORDERER_2_HOST}:${IP_2}"
+      - "${ORDERER_3_HOST}:${IP_3}"
+      - "${ORDERER_4_HOST}:${IP_4}"

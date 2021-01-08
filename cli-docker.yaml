@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:${IMAGE_TAG}
+    tty: true
+    stdin_open: true
+    restart: always
+    environment:
+      - SERVER_ID=${SERVER_ID}
+      - ORDERER_HOST=orderer0.${NETWORKMODE}:7050
+      - ORDERER_PEM=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/${NETWORKMODE}/orderers/orderer0.${NETWORKMODE}/msp/tlscacerts/tlsca.${NETWORKMODE}-cert.pem
+      - SYS_CHANNEL=${SYS_CHANNEL}
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - ORG_0_HOST=${ORG_0_HOST}
+      - ORG_1_HOST=${ORG_1_HOST}
+      - ORG_0_PEER_0=${ORG_0_PEER_0}:7051
+      - ORG_1_PEER_1=${ORG_1_PEER_1}:8051
+      - ORG_0_PEER_0_MSP=${ORG_0_MSP}
+      - ORG_1_PEER_1_MSP=${ORG_1_MSP}
+      - ORG_0_PEER_0_CERT=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG_0_HOST}/peers/${ORG_0_PEER_0}/tls/server.crt
+      - ORG_1_PEER_1_CERT=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG_1_HOST}/peers/${ORG_1_PEER_1}/tls/server.crt
+      - ORG_0_PEER_0_KEY=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG_0_HOST}/peers/${ORG_0_PEER_0}/tls/server.key
+      - ORG_1_PEER_1_KEY=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG_1_HOST}/peers/${ORG_1_PEER_1}/tls/server.key
+      - ORG_0_PEER_0_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG_0_HOST}/peers/${ORG_0_PEER_0}/tls/ca.crt
+      - ORG_1_PEER_1_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG_1_HOST}/peers/${ORG_1_PEER_1}/tls/ca.crt
+      - ORG_0_PEER_0_ADMIN=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG_0_HOST}/users/Admin@${ORG_0_HOST}/msp
+      - ORG_1_PEER_1_ADMIN=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/${ORG_1_HOST}/users/Admin@${ORG_1_HOST}/msp
+      - CORE_PEER_TLS_ENABLED=true
+      - CHANNEL=${CHANNEL}
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./chaincode:/opt/gopath/src/chaincode
+      - ./github.com:/opt/gopath/src/github.com
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    extra_hosts:
+      - "${ORDERER_0_HOST}:${IP_0}"
+      - "${ORDERER_1_HOST}:${IP_1}"
+      - "${ORDERER_2_HOST}:${IP_2}"
+      - "${ORDERER_3_HOST}:${IP_3}"
+      - "${ORDERER_4_HOST}:${IP_4}"
+      - "peer0.${AU_HOST}:${IP_0}"
+      - "peer1.${AU_HOST}:${IP_4}"
+      - "peer0.${DP_HOST}:${IP_1}"
+      - "peer1.${DP_HOST}:${IP_0}"
+      - "peer0.${DU_HOST}:${IP_2}"
+      - "peer1.${DU_HOST}:${IP_1}"
+      - "peer0.${RL_HOST}:${IP_3}"
+      - "peer1.${RL_HOST}:${IP_2}"
+      - "peer0.${AP_HOST}:${IP_4}"
+      - "peer1.${AP_HOST}:${IP_3}"
+
+networks:
+  default:
+    external:
+      name: nvxclouds.com

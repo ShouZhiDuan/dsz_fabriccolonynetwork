@@ -1,0 +1,11 @@
+version: '2'
+services:
+  zookeeper:
+    extends:
+      service: zookeeper
+      file: base/zk-base.yaml
+
+networks:
+  default:
+    external:
+      name: nvxclouds.com

@@ -1,0 +1,16 @@
+version: '2'
+services:
+
+  orderer:
+    extends:
+      service: orderer-base
+      file: base/orderer-base.yaml
+
+
+volumes:
+  orderer.nvxclouds.com:
+
+networks:
+  default:
+    external:
+      name: nvxclouds.com

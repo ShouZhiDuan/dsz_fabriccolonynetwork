@@ -1,0 +1,28 @@
+version: "2"
+services:
+  zookeeper:
+    image: hyperledger/fabric-zookeeper
+    container_name: ${ZOO_HOST}
+    hostname: ${ZOO_HOST}
+    restart: always
+    environment:
+      - ZOO_SERVERS=server.1=${ZK_0_HOST}:2888:3888 server.2=${ZK_1_HOST}:2888:3888 server.3=${ZK_2_HOST}:2888:3888 server.3=${ZK_3_HOST}:2888:3888 server.3=${ZK_4_HOST}:2888:3888
+      - ZOO_MY_ID=${SERVER_ID}
+      - ZOO_SERVERS=${ZOO_SERVERS}
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+    volumes:
+      - ../../fabric/zoo/data:/data
+    extra_hosts:
+      - "${ZK_0_HOST}:${IP_0}"
+      - "${ZK_1_HOST}:${IP_1}"
+      - "${ZK_2_HOST}:${IP_2}"
+      - "${ZK_3_HOST}:${IP_3}"
+      - "${ZK_4_HOST}:${IP_4}"
+      - "${KAFKA_0_HOST}:${IP_0}"
+      - "${KAFKA_1_HOST}:${IP_1}"
+      - "${KAFKA_2_HOST}:${IP_2}"
+      - "${KAFKA_3_HOST}:${IP_3}"
+      - "${KAFKA_4_HOST}:${IP_4}"
